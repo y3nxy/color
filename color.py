@@ -42,12 +42,14 @@ ascii_font = {
 }
 
 def clear_screen():
+    # Clears terminal; Termux works as normal Linux
     os.system("cls" if os.name == "nt" else "clear")
 
 def exit_cleanly(signum=None, frame=None):
     clear_screen()
     sys.exit(0)
 
+# Catch Ctrl+C on any platform
 signal.signal(signal.SIGINT, exit_cleanly)
 
 def word_to_ascii(word):
@@ -63,18 +65,12 @@ def word_to_ascii(word):
     return lines
 
 def scale_text(lines, term_width, term_height):
-    # Dynamically scale to fit terminal, even on small mobile terminals
     orig_height = len(lines)
     orig_width = max(len(line) for line in lines)
-    
-    # Calculate scale factor aggressively for mobile
     v_scale = max(1, term_height // orig_height)
     h_scale = max(1, term_width // orig_width)
-    
-    # Pick the smaller scale to ensure both width and height fit
     scale = min(v_scale, h_scale)
     scaled_lines = []
-    
     for line in lines:
         new_line = "".join(char * scale for char in line)
         for _ in range(scale):
@@ -119,7 +115,8 @@ def animate(scaled, color_input):
     except KeyboardInterrupt:
         exit_cleanly()
 
-# Main
+# === Main ===
+clear_screen()  # Clear first
 word = input("Enter any text to print: ")
 
 color_input = ""
