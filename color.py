@@ -100,21 +100,14 @@ def animate(scaled, mode):
                     time.sleep(0.2)
 
         elif mode == "random":
-            # pick ONE random color and keep it
-            hex_color = random_hex()
-            color = hex_to_ansi(hex_color)
-
-            # optional: show the chosen color once
-            print(f"Random color chosen: {hex_color}")
-            time.sleep(1)
-
+            color = hex_to_ansi(random_hex())
             while True:
                 sys.stdout.write("\033[H")
                 for line in scaled:
                     print(color + bold + line + reset)
                 time.sleep(0.2)
 
-        else:  # HEX color
+        else:
             color = hex_to_ansi(mode)
             while True:
                 sys.stdout.write("\033[H")
@@ -127,15 +120,16 @@ def animate(scaled, mode):
 
 # === Main ===
 clear_screen()
-word = input("Enter any text to print (max 18 chars,only letters and spaces.): ")
 
+# take input (prompts will be wiped after)
+word = input("Enter text: ")
 while True:
-    color_input = input(
-        "Choose color (hex code / rainbow / random): "
-    ).strip().lower()
-
+    color_input = input("Color (hex / rainbow / random): ").strip().lower()
     if color_input in ["rainbow", "random"] or re.match(r"^#([0-9a-fA-F]{6})$", color_input):
         break
+
+# 🔥 clear everything before showing output
+clear_screen()
 
 term_size = shutil.get_terminal_size()
 term_width, term_height = term_size.columns, term_size.lines
