@@ -127,7 +127,7 @@ def animate(scaled, mode):
 
 # === Main ===
 clear_screen()
-word = input("Enter any text to print: ")
+word = input("Enter any text to print (max 18 chars,only letters and spaces.): ")
 
 while True:
     color_input = input(
